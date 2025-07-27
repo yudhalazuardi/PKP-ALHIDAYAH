@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Akademik - Pesantren Al-Baqiyatush Shalihat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .active-menu {
+            background-color: #e9f7fe;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                z-index: 50;
+                left: -100%;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 40;
+                display: none;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden fixed top-4 left-4 z-30">
+        <button id="mobileMenuButton" class="p-2 rounded-md bg-white shadow-md text-blue-600">
+            <i class="fas fa-bars text-xl"></i>
+        </button>
+    </div>
+    
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar w-64 h-screen bg-white shadow-md fixed overflow-y-auto">
+        <!-- Logo and Name -->
+        <div class="p-4 flex items-center justify-center border-b">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2JOSTJXee_sCZESui5Md8tueVREtx6lszYQ&s" alt="Logo Pesantren" class="w-10 h-10 rounded-full">
+            <div class="ml-3">
+                <h1 class="font-bold text-lg">PKP Al-Hidayah</h1>
+                <p class="text-xs text-gray-500">Sistem Informasi Akademik</p>
+            </div>
+        </div>
+        
+        <!-- User Profile -->
+        <div class="p-4 flex items-center border-b">
+            <img src="https://via.placeholder.com/50" alt="User Photo" class="w-12 h-12 rounded-full">
+            <div class="ml-3">
+                <h2 class="font-semibold">Lazuardi Yudha</h2>
+                <p class="text-xs text-gray-500">Guru Tahfidz</p>
+            </div>
+        </div>
+        
+        <!-- Main Menu -->
+        <div class="p-2">
+            <ul>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100 active-menu">
+                        <i class="fas fa-home text-blue-600 mr-3"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-user-graduate text-blue-600 mr-3"></i>
+                        <span>Santri</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-chalkboard-teacher text-blue-600 mr-3"></i>
+                        <span>Guru</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-book text-blue-600 mr-3"></i>
+                        <span>Mata Pelajaran</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-calendar-alt text-blue-600 mr-3"></i>
+                        <span>Jadwal</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-clipboard-list text-blue-600 mr-3"></i>
+                        <span>Nilai</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-quran text-blue-600 mr-3"></i>
+                        <span>Tahfidz</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-chart-bar text-blue-600 mr-3"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-clipboard-check text-blue-600 mr-3"></i>
+                        <span>Absensi Karyawan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-money-bill-wave text-blue-600 mr-3"></i>
+                        <span>Keuangan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-boxes text-blue-600 mr-3"></i>
+                        <span>Inventaris</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-file-invoice-dollar text-blue-600 mr-3"></i>
+                        <span>Data Gaji & Lembur</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Additional Menu -->
+        <div class="p-2 border-t">
+            <ul>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-cog text-blue-600 mr-3"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center p-3 rounded-lg hover:bg-gray-100">
+                        <i class="fas fa-sign-out-alt text-blue-600 mr-3"></i>
+                        <span>Keluar</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="md:ml-64 min-h-screen">
+        <!-- Top Navigation -->
+        <nav class="bg-white shadow-sm p-4 flex justify-between items-center sticky top-0 z-20">
+            <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Notification -->
+                <div class="relative">
+                    <button id="notificationButton" class="p-2 rounded-full hover:bg-gray-100 relative">
+                        <i class="fas fa-bell text-gray-600"></i>
+                        <span class="notification-badge bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                    </button>
+                    
+                    <!-- Notification Dropdown -->
+                    <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg py-1 z-50">
+                        <div class="px-4 py-2 border-b">
+                            <h3 class="font-semibold">Notifikasi</h3>
+                        </div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                                    <i class="fas fa-info-circle text-blue-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium">Rapat guru hari ini pukul 13.00</p>
+                                    <p class="text-xs text-gray-500">10 menit yang lalu</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-b">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-yellow-100 p-2 rounded-full">
+                                    <i class="fas fa-exclamation-triangle text-yellow-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium">Jadwal ujian telah diupdate</p>
+                                    <p class="text-xs text-gray-500">1 jam yang lalu</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                                    <i class="fas fa-check-circle text-green-600"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-medium">5 santri baru telah mendaftar</p>
+                                    <p class="text-xs text-gray-500">3 jam yang lalu</p>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="px-4 py-2 text-center bg-gray-50">
+                            <a href="#" class="text-sm text-blue-600 font-medium">Lihat Semua</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Profile -->
+                <div class="relative">
+                    <button id="userMenuButton" class="flex items-center space-x-2">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2JOSTJXee_sCZESui5Md8tueVREtx6lszYQ&s" alt="Logo Pesantren" class="w-8 h-8 rounded-full">
+                        <span class="hidden md:inline text-gray-700">Lazuardi Yudha</span>
+                        <i class="fas fa-chevron-down text-gray-500 text-xs"></i>
+                    </button>
+                    
+                    <!-- User Dropdown -->
+                    <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profil</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pengaturan</a>
+                        <div class="border-t"></div>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Keluar</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Content -->
+        <main class="p-4">
+            <!-- Welcome Banner -->
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white mb-6">
+                <h2 class="text-2xl font-bold mb-2">Assalamu'alaikum, Lazuardi Yudha</h2>
+                <p class="mb-4">Selamat datang di Sistem Informasi Akademik Pesantren PKP Al-Hidayah</p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-400 bg-opacity-50 px-3 py-1 rounded-full text-xs">Hari ini: 12 Muharram 1445 H</span>
+                    <span class="bg-blue-400 bg-opacity-50 px-3 py-1 rounded-full text-xs">Jadwal: Tahfidz pagi & Fiqh siang</span>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="dashboard-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500 transition duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Total Santri</p>
+                            <h3 class="text-2xl font-bold">248</h3>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-full">
+                            <i class="fas fa-user-graduate text-blue-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 12 baru</span>
+                        <span class="text-gray-400 mx-2">|</span>
+                        <span class="text-sm text-gray-500">Tahun ini</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 transition duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Total Guru</p>
+                            <h3 class="text-2xl font-bold">24</h3>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-full">
+                            <i class="fas fa-chalkboard-teacher text-green-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 2 baru</span>
+                        <span class="text-gray-400 mx-2">|</span>
+                        <span class="text-sm text-gray-500">Tahun ini</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-yellow-500 transition duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Hafalan Baru</p>
+                            <h3 class="text-2xl font-bold">36</h3>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-full">
+                            <i class="fas fa-quran text-yellow-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-green-500 text-sm font-medium"><i class="fas fa-arrow-up"></i> 5 hari ini</span>
+                        <span class="text-gray-400 mx-2">|</span>
+                        <span class="text-sm text-gray-500">Minggu ini</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500 transition duration-300">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-500 text-sm">Kegiatan</p>
+                            <h3 class="text-2xl font-bold">3</h3>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <i class="fas fa-calendar-check text-purple-600"></i>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <span class="text-blue-500 text-sm font-medium"><i class="fas fa-info-circle"></i> 1 berlangsung</span>
+                        <span class="text-gray-400 mx-2">|</span>
+                        <span class="text-sm text-gray-500">Hari ini</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Jadwal Hari Ini -->
+                <div class="lg:col-span-2 bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Jadwal Hari Ini</h2>
+                        <a href="#" class="text-blue-600 text-sm">Lihat Semua <i class="fas fa-chevron-right ml-1"></i></a>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Waktu</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kelas</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mata Pelajaran</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guru</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2 py-1 rounded">07:30 - 09:00</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">Tahfidz 1</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium">Tahfidz Juz 30</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://via.placeholder.com/30" alt="Guru" class="w-6 h-6 rounded-full mr-2">
+                                            <span>Ustadz Abdullah</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded">09:30 - 11:00</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">Kelas 7</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium">Aqidah Akhlak</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://via.placeholder.com/30" alt="Guru" class="w-6 h-6 rounded-full mr-2">
+                                            <span>Ustadzah Fatimah</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded">13:00 - 14:30</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">Kelas 10</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium">Fiqh</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://via.placeholder.com/30" alt="Guru" class="w-6 h-6 rounded-full mr-2">
+                                            <span>Lazuardi Yudha</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2 py-1 rounded">15:00 - 16:30</span>
+                                    </td>
+                                    <td class="px-4 py-3 whitespace-nowrap">Tahfidz 2</td>
+                                    <td class="px-4 py-3 whitespace-nowrap font-medium">Muroja'ah</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <img src="https://via.placeholder.com/30" alt="Guru" class="w-6 h-6 rounded-full mr-2">
+                                            <span>Ustadz Muhammad</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Aktivitas Terbaru -->
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">Aktivitas Terbaru</h2>
+                        <a href="#" class="text-blue-600 text-sm">Lihat Semua <i class="fas fa-chevron-right ml-1"></i></a>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                                <i class="fas fa-book text-blue-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Nilai ujian Fiqh telah diinput</p>
+                                <p class="text-xs text-gray-500">Oleh Ustadz Ahmad - 30 menit yang lalu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-green-100 p-2 rounded-full">
+                                <i class="fas fa-user-plus text-green-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Santri baru telah mendaftar</p>
+                                <p class="text-xs text-gray-500">Muhammad Fahri - 2 jam yang lalu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-yellow-100 p-2 rounded-full">
+                                <i class="fas fa-quran text-yellow-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Hafalan baru juz 30 oleh santri</p>
+                                <p class="text-xs text-gray-500">Abdurrahman - Surat An-Naba' - 4 jam yang lalu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-purple-100 p-2 rounded-full">
+                                <i class="fas fa-calendar-alt text-purple-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Jadwal baru telah ditambahkan</p>
+                                <p class="text-xs text-gray-500">Kajian Kitab - Sabtu pagi - 1 hari yang lalu</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 bg-red-100 p-2 rounded-full">
+                                <i class="fas fa-exclamation-circle text-red-600"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium">Peringatan: Batas input nilai</p>
+                                <p class="text-xs text-gray-500">Batas akhir input nilai ujian - 2 hari lagi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Santri dengan Hafalan Terbanyak -->
+            <div class="mt-6 bg-white p-4 rounded-lg shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Santri dengan Hafalan Terbanyak</h2>
+                    <a href="#" class="text-blue-600 text-sm">Lihat Semua <i class="fas fa-chevron-right ml-1"></i></a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="border rounded-lg p-4 flex items-center">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-award text-blue-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Abdullah Al-Faruq</h3>
+                            <p class="text-sm text-gray-600">5 juz</p>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-blue-600 h-1.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border rounded-lg p-4 flex items-center">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-medal text-green-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Fatimah Az-Zahra</h3>
+                            <p class="text-sm text-gray-600">4.5 juz</p>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-green-600 h-1.5 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border rounded-lg p-4 flex items-center">
+                        <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-star text-yellow-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Muhammad Al-Fatih</h3>
+                            <p class="text-sm text-gray-600">4 juz</p>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-yellow-600 h-1.5 rounded-full" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border rounded-lg p-4 flex items-center">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-trophy text-purple-600 text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold">Aisyah Binti Abu Bakar</h3>
+                            <p class="text-sm text-gray-600">3.5 juz</p>
+                            <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                <div class="bg-purple-600 h-1.5 rounded-full" style="width: 55%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-white p-4 border-t mt-6">
+            <div class="container mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <p class="text-gray-600 text-sm">&copy; 2023 Pesantren PKP Al-Hidayah. All rights reserved.</p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">Kebijakan Privasi</a>
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">Syarat & Ketentuan</a>
+                        <a href="#" class="text-gray-600 hover:text-blue-600 text-sm">Bantuan</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        // Notification Dropdown
+        const notificationButton = document.getElementById('notificationButton');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+        
+        notificationButton.addEventListener('click', () => {
+            notificationDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!notificationButton.contains(e.target) && !notificationDropdown.contains(e.target)) {
+                notificationDropdown.classList.add('hidden');
+            }
+        });
+        
+        // User Menu Dropdown
+        const userMenuButton = document.getElementById('userMenuButton');
+        const userDropdown = document.getElementById('userDropdown');
+        
+        userMenuButton.addEventListener('click', () => {
+            userDropdown.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuButton.contains(e.target) && !userDropdown.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+            }
+        });
+        
+        // Active menu item
+        const menuItems = document.querySelectorAll('.sidebar ul li a');
+        
+        menuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                menuItems.forEach(i => i.classList.remove('active-menu'));
+                item.classList.add('active-menu');
+            });
+        });
+    </script>
+</body>
+</html>
